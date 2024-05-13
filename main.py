@@ -26,7 +26,7 @@ def main_pipeline(parser):
         inf = SegInference(model_path=parser.model_path,
                            device=device)
 
-        _ = inf.infer(parser.image_path)
+        _ = inf.infer(parser.image_path, parser.image_grad_path)
 
 
 if __name__ == '__main__':

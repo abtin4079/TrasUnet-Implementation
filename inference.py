@@ -3,6 +3,7 @@ import cv2
 import torch
 import numpy as np
 import datetime
+import matplotlib.pyplot as plt
 
 # Additional Scripts
 from train_transunet import TransUNetSeg
@@ -17,8 +18,8 @@ class SegInference:
         self.transunet = TransUNetSeg(device)
         self.transunet.load_model(model_path)
 
-        if not os.path.exists('./results'):
-            os.mkdir('./results')
+        if not os.path.exists('/content/results'):
+            os.mkdir('/content/results')
 
     def read_and_preprocess(self, p):
         img = cv2.imread(p)
@@ -33,7 +34,7 @@ class SegInference:
         return img, img_torch
 
     def save_preds(self, preds):
-        folder_path = './results/' + str(datetime.datetime.utcnow()).replace(' ', '_')
+        folder_path = '/content/results' + str(datetime.datetime.utcnow()).replace(' ', '_')
 
         os.mkdir(folder_path)
         for name, pred_mask in preds.items():
@@ -41,6 +42,7 @@ class SegInference:
 
     def infer(self, path, grad_path,merged=True, save=True):
         path = [path] if isinstance(path, str) else path
+        grad_path = [grad_path] if isinstance(grad_path, str) else grad_path
 
         preds = {}
 
@@ -58,9 +60,15 @@ class SegInference:
 
             orig_h, orig_w = img.shape[:2]
             pred_mask = cv2.resize(pred_mask[0, ...], (orig_w, orig_h))
+            print(pred_mask.shape)
+            pred_mask_before_th = pred_mask * 255
+            cv2.imwrite('/content/results/plot1.png', pred_mask_before_th)
+
             pred_mask = thresh_func(pred_mask, thresh=cfg.inference_threshold)
             pred_mask *= 255
+            cv2.imwrite('/content/results/plot2.png', pred_mask)                
 
+            print(pred_mask.shape)
             if merged:
                 pred_mask = cv2.bitwise_and(img, img, mask=pred_mask.astype('uint8'))
 
