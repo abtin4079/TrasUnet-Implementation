@@ -40,6 +40,7 @@ if __name__ == '__main__':
     parser.add_argument('--test_sail_path', required='train' in sys.argv, type=str, default=None)
 
     parser.add_argument('--image_path', required='infer' in sys.argv, type=str, default=None)
+    parser.add_argument('--image_grad_path', required='infer' in sys.argv, type=str, default=None)
     parser = parser.parse_args()
 
     main_pipeline(parser)
