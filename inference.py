@@ -44,6 +44,7 @@ class SegInference:
         path = [path] if isinstance(path, str) else path
         grad_path = [grad_path] if isinstance(grad_path, str) else grad_path
 
+        filename_for_saving = os.path.basename(path)
         preds = {}
 
         for p_grad in grad_path:
@@ -62,11 +63,11 @@ class SegInference:
             pred_mask = cv2.resize(pred_mask[0, ...], (orig_w, orig_h))
             print(pred_mask.shape)
             pred_mask_before_th = pred_mask * 255
-            cv2.imwrite('/content/results/plot1.png', pred_mask_before_th)
+            cv2.imwrite(f'/content/drive/MyDrive/kvasir/train/treshold_img/{filename_for_saving}', pred_mask_before_th)
 
             pred_mask = thresh_func(pred_mask, thresh=cfg.inference_threshold)
             pred_mask *= 255
-            cv2.imwrite('/content/results/plot2.png', pred_mask)                
+            # cv2.imwrite('/content/results/plot2.png', pred_mask)                
 
             print(pred_mask.shape)
             if merged:
@@ -74,7 +75,7 @@ class SegInference:
 
             preds[file_name] = pred_mask
 
-        if save:
-            self.save_preds(preds)
+        # if save:
+        #     self.save_preds(preds)
 
         return preds
