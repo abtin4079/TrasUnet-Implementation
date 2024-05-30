@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {0..900}  # Using seq -w for zero-padded numbers
+for i in {1..900}  # Using seq -w for zero-padded numbers
 do
     image_path="/content/drive/MyDrive/kvasir/test/img/${i}.jpg"
     image_grad_path="/content/drive/MyDrive/kvasir/test/grad_img/${i}.png"
