@@ -2,11 +2,11 @@ from easydict import EasyDict
 
 cfg = EasyDict()
 cfg.batch_size = 10
-cfg.epoch = 55
+cfg.epoch = 150
 cfg.learning_rate = 1e-2
 cfg.momentum = 0.9
 cfg.weight_decay = 1e-4
-cfg.patience = 25
+cfg.patience = 20
 cfg.inference_threshold = 0.75
 
 cfg.transunet = EasyDict()
